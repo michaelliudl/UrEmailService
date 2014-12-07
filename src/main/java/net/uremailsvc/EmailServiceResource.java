@@ -8,7 +8,8 @@ import net.uremailsvc.service.EmailServiceFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-/** Example resource class hosted at the URI path "/myresource"
+/**
+ * JAX-RS resource for email service using Jersey
  */
 @Path("/")
 public class EmailServiceResource {
@@ -24,14 +25,18 @@ public class EmailServiceResource {
         return "Hi there!";
     }
 
+	/**
+	 * Operation to send email using HTTP POST
+	 * Interface is JSON.
+	 *
+	 * @param request email request with from address, list of to/cc/bcc addresses, subject and content
+	 * @return result object indicating success or failure (with messages)
+	 */
 	@POST
 	@Path("/sendEmail")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public EmailResponse sendEmail(EmailRequest request) {
-		System.out.println(request.toString());
-		System.out.println(Thread.currentThread().getName());
-		EmailResponse response = EmailServiceFactory.getService().send(request);
-		return new EmailResponse();
+		return EmailServiceFactory.getService().send(request);
 	}
 }

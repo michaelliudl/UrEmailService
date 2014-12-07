@@ -41,23 +41,23 @@ class EmailProviderMandrill implements IEmailProvider {
 	@Override
 	public EmailResponse send(EmailRequest request) {
 		MandrillMessage message = convertEmail(request);
-		EmailResponse response = new EmailResponse();
+		EmailResponse response = EmailResponse.OK;
 		try {
 			MandrillMessageStatus[] status = api.messages().send(message, false);
 			if (status == null || status.length == 0
 					|| !String.valueOf(HttpStatus.SC_OK).equals(status[0].getStatus())) {
 				response = new EmailResponse(EmailResponse.EmailState.InternalError,
-						status[0].getId(), status[0].getRejectReason());
+						status[0].getRejectReason());
 			}
 			LOGGER.log(Level.INFO, status.toString());
 		} catch (MandrillApiError mae) {
 			LOGGER.log(Level.WARNING, mae.getMandrillErrorMessage());
 			response = new EmailResponse(EmailResponse.EmailState.InternalError,
-					mae.getMandrillErrorName(), mae.getMandrillErrorMessage());
+					mae.getMandrillErrorMessage());
 		} catch (IOException ioe) {
 			LOGGER.log(Level.WARNING, ioe.getMessage());
 			response = new EmailResponse(EmailResponse.EmailState.InternalError,
-					ioe.getMessage(), ioe.getLocalizedMessage());
+					ioe.getMessage());
 		}
 		return response;
 	}

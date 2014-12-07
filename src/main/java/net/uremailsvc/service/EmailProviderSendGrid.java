@@ -36,20 +36,18 @@ class EmailProviderSendGrid implements IEmailProvider {
 	@Override
 	public EmailResponse send(EmailRequest request) {
 		SendGrid.Email email = convertEmail(request);
-		EmailResponse result = new EmailResponse();
+		EmailResponse result = EmailResponse.OK;
 		try {
 			SendGrid.Response response = sendGrid.send(email);
 			LOGGER.log(Level.INFO, response.getMessage());
 			if (response == null || !response.getStatus()) {
 				result = new EmailResponse(EmailResponse.EmailState.InternalError,
-						String.valueOf(response.getCode()),
 						response.getMessage());
 			}
 		} catch (SendGridException sge) {
 			LOGGER.log(Level.WARNING, sge.getMessage());
 			result = new EmailResponse(EmailResponse.EmailState.InternalError,
-					sge.getMessage(),
-					sge.getLocalizedMessage());
+					sge.getMessage());
 		}
 		return result;
 	}

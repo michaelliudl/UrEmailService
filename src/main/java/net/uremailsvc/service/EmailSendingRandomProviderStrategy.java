@@ -27,14 +27,13 @@ class EmailSendingRandomProviderStrategy implements IEmailSendingStrategy {
 	public EmailResponse send(EmailRequest request) {
 		boolean done = false;
 		Set<IEmailProvider> usedProviders = new HashSet<IEmailProvider>();
-		EmailResponse response = new EmailResponse();
+		EmailResponse response = EmailResponse.OK;
 		while (!done) {
 			IEmailProvider provider = getRandom(usedProviders);
 			if (provider == null) {
 				LOGGER.log(Level.SEVERE, "Unable to send email by any provider.");
 				response = new EmailResponse(EmailResponse.EmailState.InternalError,
-						"Unable to send email.",
-						"All email providers are not working.");
+						"Unable to send email with any provider.");
 				break;
 			}
 			LOGGER.log(Level.INFO, "Provider " + provider.getName() + " is selected.");

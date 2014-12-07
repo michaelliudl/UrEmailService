@@ -50,14 +50,14 @@ class EmailProviderAmazonSES implements IEmailProvider {
 
 	@Override
 	public EmailResponse send(EmailRequest request) {
-		EmailResponse response = new EmailResponse();
+		EmailResponse response = EmailResponse.OK;
 		try {
 			SendEmailRequest req = convertRequest(request);
 			SendEmailResult result = client.sendEmail(req);
 			LOGGER.log(Level.INFO, result.toString());
 		} catch(Exception e) {
 			LOGGER.log(Level.WARNING, e.getMessage());
-			response = new EmailResponse(EmailResponse.EmailState.InternalError, e.getMessage(), e.getLocalizedMessage());
+			response = new EmailResponse(EmailResponse.EmailState.InternalError, e.getMessage());
 		}
 		return response;
 	}

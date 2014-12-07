@@ -15,11 +15,19 @@ class EmailServiceValidationStage implements IEmailServiceStage {
 
 	EmailServiceValidationStage() {
 		validators = new HashSet<IEmailValidator>();
-//		validators.add();
+		validators.add(new EmailAddressValidator());
+		validators.add(new EmailContentValidator());
 	}
 
 	@Override
 	public EmailResponse execStage(EmailRequest request) {
-		return new EmailResponse();
+		EmailResponse response = EmailResponse.OK;
+		for (IEmailValidator validator : validators) {
+			response = validator.validate(request);
+			if (EmailResponse.EmailState.OK != response.getStatus()) {
+				return response;
+			}
+		}
+		return response;
 	}
 }

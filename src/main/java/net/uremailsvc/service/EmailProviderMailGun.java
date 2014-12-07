@@ -42,7 +42,7 @@ class EmailProviderMailGun implements IEmailProvider {
 
 	@Override
 	public EmailResponse send(EmailRequest request) {
-		EmailResponse response = new EmailResponse();
+		EmailResponse response = EmailResponse.OK;
 		try {
 			WebResource resource = client.resource(API_URL);
 			MultivaluedMapImpl data = convertMessage(request);
@@ -50,11 +50,11 @@ class EmailProviderMailGun implements IEmailProvider {
 			LOGGER.log(Level.INFO, res.toString());
 			if (HttpStatus.SC_OK != res.getStatus()) {
 				response = new EmailResponse(EmailResponse.EmailState.InternalError,
-						String.valueOf(res.getStatus()), res.getStatusInfo().getReasonPhrase());
+						String.valueOf(res.getStatus()));
 			}
 		} catch(Exception e) {
 			LOGGER.log(Level.WARNING, e.getMessage());
-			response = new EmailResponse(EmailResponse.EmailState.InternalError, e.getMessage(), e.getLocalizedMessage());
+			response = new EmailResponse(EmailResponse.EmailState.InternalError, e.getMessage());
 		}
 		return response;
 	}

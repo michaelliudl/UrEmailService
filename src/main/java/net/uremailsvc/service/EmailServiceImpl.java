@@ -30,6 +30,6 @@ class EmailServiceImpl implements IEmailService {
 				return response;
 			}
 		}
-		return new EmailResponse();
+		return EmailResponse.OK;
 	}
 }

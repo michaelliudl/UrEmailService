@@ -5,20 +5,19 @@ package net.uremailsvc.pojo;
  */
 public class EmailResponse {
 	private EmailState status = EmailState.OK;
-	private String shortError = "";
-	private String longError = "";
+	private String error = "";
+
+	public static final EmailResponse OK = new EmailResponse();
 
 	public EmailResponse() {}
 
-	public EmailResponse(EmailState status, String shortError, String longError) {
+	public EmailResponse(EmailState status, String error) {
 		this.status = status;
-		this.shortError = shortError;
-		this.longError = longError;
+		this.error = error;
 	}
 
 	public EmailState getStatus() {return status;}
-	public String getShortError() {return shortError;}
-	public String getLongError() {return longError;}
+	public String getError() {return error;}
 
 	public enum EmailState {
 		OK,

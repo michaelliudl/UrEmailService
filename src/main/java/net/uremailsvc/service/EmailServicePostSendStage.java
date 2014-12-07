@@ -9,6 +9,6 @@ import net.uremailsvc.pojo.EmailResponse;
 class EmailServicePostSendStage implements IEmailServiceStage {
 	@Override
 	public EmailResponse execStage(EmailRequest request) {
-		return new EmailResponse();
+		return EmailResponse.OK;
 	}
 }
