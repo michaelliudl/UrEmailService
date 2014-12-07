@@ -25,6 +25,8 @@ class EmailProviderMandrill implements IEmailProvider {
 	private final MandrillApi api;
 	private static final EmailProviderMandrill INST = new EmailProviderMandrill();
 
+	private static final String SENT = "sent";
+
 	private EmailProviderMandrill() {
 		api = new MandrillApi("VNijesACNPMozHp1h02ZsQ");
 	}
@@ -44,10 +46,20 @@ class EmailProviderMandrill implements IEmailProvider {
 		EmailResponse response = EmailResponse.OK;
 		try {
 			MandrillMessageStatus[] status = api.messages().send(message, false);
-			if (status == null || status.length == 0
-					|| !String.valueOf(HttpStatus.SC_OK).equals(status[0].getStatus())) {
+			if (status == null || status.length == 0) {
 				response = new EmailResponse(EmailResponse.EmailState.InternalError,
-						status[0].getRejectReason());
+						"No response from Mandrill.");
+			}
+			boolean allFail = true;
+			for (MandrillMessageStatus s : status) {
+				if (SENT.equalsIgnoreCase(s.getStatus())) {
+					allFail = false;
+					break;
+				}
+			}
+			if (allFail) {
+				response = new EmailResponse(EmailResponse.EmailState.InternalError,
+						"All send request to Mandrill failed.");
 			}
 			LOGGER.log(Level.INFO, status.toString());
 		} catch (MandrillApiError mae) {

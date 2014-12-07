@@ -48,7 +48,9 @@ class EmailSendingRandomProviderStrategy implements IEmailSendingStrategy {
 		}
 		return response;
 	}
-
+	/*
+	 * Randomly select email provider from those not yet tried.
+	 */
 	private IEmailProvider getRandom(Set<IEmailProvider> usedProviders) {
 		if (usedProviders.size() == PROVIDERS.size()) {
 			return null;
