@@ -9,6 +9,11 @@ public class EmailRequest {
 
 	public EmailRequest() {}
 
+	/**
+	 * Email request for the service.
+	 * @param emailSvcUser Email service user name for authentication and logging.
+	 * @param message Email message
+	 */
 	public EmailRequest(final String emailSvcUser, final EmailMessage message) {
 		this.emailSvcUser = emailSvcUser;
 		this.message = message;
