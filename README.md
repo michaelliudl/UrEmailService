@@ -1,5 +1,7 @@
 # Email Service
-A Restful service built based on JAX-RS specification using Jersey.
+Backend only.
+
+A Restful service built based on JAX-RS specification using Jersey which I've been using in the last two years.
 
 The service takes email messages in JSON format and randomly select one from the four service providers to send. If one service provider fails, another one will be randomly selected.
 
